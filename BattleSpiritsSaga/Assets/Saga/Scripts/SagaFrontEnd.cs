@@ -19,9 +19,16 @@ namespace PhuocDai.Saga
         AudioSource audioSource; AudioClip clickSound;
         SavedDeck ActiveDeck {get{return profile.Decks.FirstOrDefault(d=>d.Id==profile.ActiveDeck)??profile.Decks[0];}}
         List<Definition> Definitions {get{return catalog.cards.Select(c=>c.Rules()).ToList();}}
+#if UNITY_EDITOR
+        internal static string TestProfileDirectory=null;
+#endif
         void InitializeProfile()
         {
-            try{storage=new ProfileStore(Application.persistentDataPath,p=>JsonUtility.ToJson(p,true),s=>JsonUtility.FromJson<SagaProfile>(s));profile=storage.Load();profileWarning=storage.Warning;}catch(Exception e){profile=new SagaProfile();storageBlocked=true;profileWarning=e.Message+" Saving is disabled; your file has not been overwritten.";}
+            string directory=Application.persistentDataPath;
+#if UNITY_EDITOR
+            if(!string.IsNullOrEmpty(TestProfileDirectory))directory=TestProfileDirectory;
+#endif
+            try{storage=new ProfileStore(directory,p=>JsonUtility.ToJson(p,true),s=>JsonUtility.FromJson<SagaProfile>(s));profile=storage.Load();profileWarning=storage.Warning;}catch(Exception e){profile=new SagaProfile();storageBlocked=true;profileWarning=e.Message+" Saving is disabled; your file has not been overwritten.";}
             if(profile.Decks.Count==0){profile.Decks.Add(new SavedDeck{Id=Guid.NewGuid().ToString("N"),Name="Crimson Vanguard",Cards=catalog.cards.Take(13).SelectMany(c=>Enumerable.Repeat(c.id,4)).ToList()});profile.ActiveDeck=profile.Decks[0].Id;Persist();}
             audioSource=gameObject.AddComponent<AudioSource>();audioSource.playOnAwake=false;
             clickSound=AudioClip.Create("UI click",2205,1,22050,false);var samples=new float[2205];for(int i=0;i<samples.Length;i++)samples[i]=(float)Math.Sin(i*2*Math.PI*660/22050)*.045f*(1f-(float)i/samples.Length);clickSound.SetData(samples,0);
@@ -42,7 +49,7 @@ namespace PhuocDai.Saga
             profile.History.Insert(0,lastResult);if(profile.History.Count>20)profile.History.RemoveAt(20);
             try{Persist();}catch(Exception e){profileWarning="Match finished but could not save: "+e.Message;}
         }
-        void Navigate(Page next){page=next;menu=true;inspect=null;notice="";tossPending=false;}
+        void Navigate(Page next){page=next;menu=true;inspect=null;notice="";tossPending=false;confirmAction=null;}
         void RenderFrontEnd(RectTransform root)
         {
             Label(root,"BATTLE SPIRITS SAGA",.035f,.025f,.6f,.055f,32,gold);
@@ -52,7 +59,7 @@ namespace PhuocDai.Saga
             Button(root,"SETTINGS",.90f,.03f,.08f,.043f,()=>Navigate(Page.Settings),true,panel);
             Box(root,"Header rule",.035f,.095f,.94f,.002f,gold);
             switch(page){case Page.Home:HomeHub(root);break;case Page.Decks:DeckScreen(root);break;case Page.History:HistoryScreen(root);break;case Page.Settings:SettingsScreen(root);break;case Page.Result:ResultScreen(root);break;}
-            Label(root,notice!=""?notice:profileWarning!=""?profileWarning:"PHUOC DAI  /  Development build 0.2  /  20 supported spirits  /  Offline AI",.035f,.945f,.94f,.045f,16,notice!=""||profileWarning!=""?new Color(1,.65f,.4f):ink);
+            Label(root,notice!=""?notice:profileWarning!=""?profileWarning:"PHUOC DAI  /  Development build 0.2.1  /  20 supported spirits  /  Offline AI",.035f,.945f,.94f,.045f,16,notice!=""||profileWarning!=""?new Color(1,.65f,.4f):ink);
             if(confirmAction!=null)ConfirmPanel(root);
         }
         void HomeHub(Transform root)
@@ -74,7 +81,7 @@ namespace PhuocDai.Saga
         }
         InputField Field(Transform parent,string text,float x,float y,float w,float h,Action<string> changed)
         {
-            var r=Box(parent,"Input",x,y,w,h,new Color(.11f,.16f,.21f));var t=Label(r,"",.04f,.04f,.92f,.92f,19);var input=r.gameObject.AddComponent<InputField>();input.textComponent=t;input.text=text;input.characterLimit=48;input.onEndEdit.AddListener(value=>{try{changed(value);notice="";}catch(Exception e){notice=e.Message;}Render();});return input;
+            var r=Box(parent,"Input",x,y,w,h,new Color(.11f,.16f,.21f));var t=Label(r,"",.04f,.04f,.92f,.92f,19);var input=r.gameObject.AddComponent<InputField>();input.textComponent=t;input.text=text;input.characterLimit=48;input.onEndEdit.AddListener(value=>{if(rendering)return;try{changed(value);notice="";}catch(Exception e){notice=e.Message;}Render();});return input;
         }
         void SelectDeck(int delta){int i=profile.Decks.IndexOf(ActiveDeck);profile.ActiveDeck=profile.Decks[(i+delta+profile.Decks.Count)%profile.Decks.Count].Id;collectionPage=0;Persist();}
         void DeckScreen(Transform root)
@@ -146,7 +153,13 @@ namespace PhuocDai.Saga
         void OpenReplay(MatchRecord record)
         {
             var a=DeckRules.Resolve(record.PlayerDeck,Definitions);var b=DeckRules.Resolve(record.AIDeck,Definitions);
-            match=new Match(a,b,record.Seed,record.First);replay=record;replayIndex=0;replayMode=true;menu=false;payment=null;selectedHand=-1;selectedSpirit=0;inspect=null;showHelp=showLog=confirmConcede=false;
+            match=new Match(a,b,record.Seed,record.First);replay=record;replayIndex=0;replayMode=true;menu=false;payment=null;selectedHand=-1;selectedSpirit=0;inspect=null;showHelp=showLog=showTrash=confirmConcede=false;
+        }
+        void ExitReplay()
+        {
+            // A playback is not a live match. Drop it before Render can record a result.
+            match=null;replay=null;replayMode=false;replayIndex=0;
+            Navigate(Page.History);
         }
         void ReplayScreen(RectTransform root)
         {
@@ -154,7 +167,7 @@ namespace PhuocDai.Saga
             var bar=Box(root,"Replay controls",.20f,.90f,.60f,.075f,new Color(.04f,.08f,.12f));
             Label(bar,"REPLAY  "+replayIndex+" / "+replay.Commands.Count,.025f,0,.38f,1,19,gold);
             Button(bar,"NEXT ACTION",.41f,.12f,.28f,.76f,()=>{match.Apply(replay.Commands[replayIndex]);replayIndex++;},replayIndex<replay.Commands.Count);
-            Button(bar,"EXIT REPLAY",.71f,.12f,.265f,.76f,()=>{replayMode=false;Navigate(Page.History);},true,panel);
+            Button(bar,"EXIT REPLAY",.71f,.12f,.265f,.76f,ExitReplay,true,panel);
         }
     }
 }

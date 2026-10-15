@@ -11,20 +11,23 @@ namespace PhuocDai.Saga
     public partial class SagaBattleView : MonoBehaviour
     {
         SagaCatalog catalog; Match match; Font font; RectTransform screen;
+        bool renderPending, rendering;
+        Camera arenaCamera; GameObject ownedEventSystem;
         int selectedHand=-1, selectedSpirit, selectedOwner, payHand=-1;
         Payment payment; bool showTrash; int trashOwner, trashPage; bool menu=true, tossPending, tossHuman, showHelp, showLog, confirmConcede;
         float nextAI; string notice=""; CatalogEntry inspect;
         readonly Color bg=new Color(.025f,.043f,.072f), panel=new Color(.055f,.085f,.125f), gold=new Color(.86f,.69f,.36f), teal=new Color(.12f,.57f,.58f), ink=new Color(.85f,.9f,.94f);
         void Awake()
         {
-            var camera=new GameObject("Arena Camera",typeof(Camera)).GetComponent<Camera>();camera.backgroundColor=bg;camera.clearFlags=CameraClearFlags.SolidColor;
+            arenaCamera=new GameObject("Arena Camera",typeof(Camera)).GetComponent<Camera>();arenaCamera.transform.SetParent(transform,false);arenaCamera.backgroundColor=bg;arenaCamera.clearFlags=CameraClearFlags.SolidColor;
+            if(FindAnyObjectByType<AudioListener>()==null)arenaCamera.gameObject.AddComponent<AudioListener>();
             font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             catalog=Resources.Load<SagaCatalog>("Saga/TrainingCatalog");
             var canvas=new GameObject("Saga UI",typeof(RectTransform),typeof(Canvas),typeof(CanvasScaler),typeof(GraphicRaycaster));canvas.transform.SetParent(transform,false);
             canvas.GetComponent<Canvas>().renderMode=RenderMode.ScreenSpaceOverlay;
             var scaler=canvas.GetComponent<CanvasScaler>();scaler.uiScaleMode=CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(1600,900);scaler.matchWidthOrHeight=.5f;
             screen=canvas.GetComponent<RectTransform>();
-            if(EventSystem.current==null)new GameObject("EventSystem",typeof(EventSystem),typeof(StandaloneInputModule));
+            if(EventSystem.current==null){ownedEventSystem=new GameObject("EventSystem",typeof(EventSystem),typeof(StandaloneInputModule));ownedEventSystem.transform.SetParent(transform,false);}
             Application.targetFrameRate=60;if(catalog!=null)InitializeProfile();Render();
         }
         void Update()
@@ -56,7 +59,16 @@ namespace PhuocDai.Saga
         {
             var r=Box(p,"Card artwork",x,y,w,h,Color.white);var im=r.GetComponent<Image>();im.sprite=art;im.preserveAspect=true;im.raycastTarget=false;
         }
-        void Render()
+        // UI callbacks only request a redraw. Destroying an InputField during OnEndEdit
+        // can re-enter OnEndEdit and also discard the button click that changed focus.
+        void Render(){renderPending=true;}
+        void LateUpdate()
+        {
+            if(!renderPending || rendering)return;
+            renderPending=false;rendering=true;
+            try{RenderNow();}finally{rendering=false;}
+        }
+        void RenderNow()
         {
             for(int i=screen.childCount-1;i>=0;i--){var o=screen.GetChild(i).gameObject;o.SetActive(false);Destroy(o);}
             var root=Box(screen,"Background",0,0,1,1,bg);
@@ -81,7 +93,7 @@ namespace PhuocDai.Saga
             var aiIds=catalog.cards.Take(13).SelectMany(c=>Enumerable.Repeat(c.id,4)).ToArray();
             var ai=DeckRules.Resolve(aiIds,Definitions);
             startingPlayerDeck=ActiveDeck.Cards.ToArray();startingAIDeck=aiIds;
-            match=new Match(deck,ai,UnityEngine.Random.Range(1,int.MaxValue),first);menu=false;replayMode=false;outcomeWritten=false;tossPending=false;selectedHand=-1;selectedSpirit=0;inspect=null;payment=null;
+            match=new Match(deck,ai,UnityEngine.Random.Range(1,int.MaxValue),first);menu=false;replayMode=false;outcomeWritten=false;tossPending=false;selectedHand=-1;selectedSpirit=0;inspect=null;payment=null;showHelp=showLog=showTrash=confirmConcede=false;
         }
         string Stats(int p)
         {

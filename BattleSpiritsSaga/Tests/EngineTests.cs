@@ -34,17 +34,20 @@ class EngineTests
   foreach(var e in json.RootElement.EnumerateArray()) real.Add(new Definition { Id=e.GetProperty("id").GetString(),Name=e.GetProperty("title").GetString(),Color=e.GetProperty("color").GetString(),Cost=e.GetProperty("cost").GetInt32(),Reduction=e.GetProperty("reduction").GetInt32(),CoreLevels=e.GetProperty("cores").EnumerateArray().Select(v=>v.GetInt32()).ToArray(),BPLevels=e.GetProperty("bp").EnumerateArray().Select(v=>v.GetInt32()).ToArray() });
   var realDeck=real.Take(13).SelectMany(c=>Enumerable.Repeat(c,4)).ToList();
   int longest=0;
-  for(int seed=0;seed<100;seed++){
-   m=new Match(realDeck,realDeck,seed,seed%2);int actions=0;
+  for(int seed=0;seed<200;seed++){
+   var rng=new Random(seed);
+   var deckA=seed<100?realDeck:real.OrderBy(c=>rng.Next()).Take(13).SelectMany(c=>Enumerable.Repeat(c,4)).ToList();
+   var deckB=seed<100?realDeck:real.OrderBy(c=>rng.Next()).Take(13).SelectMany(c=>Enumerable.Repeat(c,4)).ToList();
+   m=new Match(deckA,deckB,seed,seed%2);int actions=0;
    while(m.Phase!=Step.Finished && actions++<3000){SagaAI.Act(m);foreach(var p in m.Players){Check(p.Reserve>=0 && p.TrashCores>=0,"nonnegative cores");Check(p.Deck.Count+p.Hand.Count+p.Field.Count+p.Trash.Count==52,"card conservation");Check((p.ReserveSoul?1:0)+(p.TrashSoul?1:0)+p.Field.Count(x=>x.Soul)==1,"one soul conserved");int gain=p.Turns-((p==m.Players[m.First] && p.Turns>0)?1:0);Check(p.Life+p.Reserve+p.TrashCores+p.Field.Sum(x=>x.Cores)+(p.ReserveSoul?1:0)+(p.TrashSoul?1:0)==9+gain,"all core conservation");}}
    Check(m.Phase==Step.Finished,"AI match terminates");
    var options=new System.Text.Json.JsonSerializerOptions{IncludeFields=true};
    var serialized=System.Text.Json.JsonSerializer.Serialize(m.Commands,options);
    var restored=System.Text.Json.JsonSerializer.Deserialize<List<MatchCommand>>(serialized,options);
-   var playback=new Match(realDeck,realDeck,seed,seed%2);foreach(var command in restored)playback.Apply(command);
+   var playback=new Match(deckA,deckB,seed,seed%2);foreach(var command in restored)playback.Apply(command);
    Check(playback.Winner==m.Winner && playback.Turn==m.Turn && string.Join("|",playback.Log)==string.Join("|",m.Log),"deterministic replay matches original");longest=Math.Max(longest,actions);
   }
   ProfileTests.Run();
-  Console.WriteLine("PASS: "+checks+" assertions; 100 AI matches completed; longest "+longest+" actions.");
+  Console.WriteLine("PASS: "+checks+" assertions; 200 AI matches completed; longest "+longest+" actions.");
  }
 }

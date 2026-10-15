@@ -9,3 +9,5 @@ Tests/obj/
 *.sln
 *.csproj
 !Tests/*.csproj
+
+TestResults/

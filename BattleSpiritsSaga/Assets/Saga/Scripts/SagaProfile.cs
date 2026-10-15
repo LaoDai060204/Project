@@ -49,17 +49,17 @@ namespace PhuocDai.Saga
         static SagaProfile Validate(SagaProfile p)
         {
             if(p==null || p.Version!=1 || p.Decks==null || p.History==null)throw new InvalidDataException("Unsupported or damaged profile format.");
-            if(p.Decks.Any(d=>d==null || string.IsNullOrEmpty(d.Id) || d.Cards==null))throw new InvalidDataException("Damaged saved deck.");
+            if(p.Decks.Any(d=>d==null || string.IsNullOrEmpty(d.Id) || string.IsNullOrWhiteSpace(d.Name) || d.Cards==null || d.Cards.Any(id=>string.IsNullOrEmpty(id))))throw new InvalidDataException("Damaged saved deck.");
             if(p.Decks.Select(d=>d.Id).Distinct().Count()!=p.Decks.Count)throw new InvalidDataException("Duplicate deck identifiers.");
             if(p.History.Any(h=>h==null || h.Commands==null || h.PlayerDeck==null || h.AIDeck==null))throw new InvalidDataException("Damaged match history.");
-            p.AIDelay=Math.Max(.2f,Math.Min(2f,p.AIDelay));return p;
+            p.AIDelay=float.IsNaN(p.AIDelay) || float.IsInfinity(p.AIDelay) ? .65f : Math.Max(.2f,Math.Min(2f,p.AIDelay));return p;
         }
         public SagaProfile Load()
         {
             Warning="";
             if(!File.Exists(path) && !File.Exists(path+".bak"))return new SagaProfile();
             try{return Validate(decode(File.ReadAllText(path)));}
-            catch(Exception e) when(e is IOException || e is ArgumentException || e is InvalidOperationException || e is FormatException)
+            catch(Exception e) when(e is IOException || e is InvalidDataException || e is ArgumentException || e is InvalidOperationException || e is FormatException)
             {
                 if(!File.Exists(path+".bak"))throw new InvalidDataException("Cannot read profile; original file was preserved.",e);
                 var restored=Validate(decode(File.ReadAllText(path+".bak")));
