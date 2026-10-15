@@ -1,3 +1,9 @@
+## Battle Spirits Saga
+
+Bản phát triển Saga đấu AI nằm trong **[BattleSpiritsSaga](BattleSpiritsSaga/README.md)**. Mở thư mục con này bằng Unity **6000.6.3f1**. Hiện hỗ trợ 20 Spirit không hiệu ứng, deck builder, AI, lưu lịch sử và replay; chưa có toàn bộ hiệu ứng hoặc multiplayer.
+
+---
+
 ## Mirrored from the chinese repo: https://code.moenext.com/sherry_chaos/MDPro3
 
 
