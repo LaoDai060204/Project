@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d6be7f36021465d9568752b20e5f23b, type: 3}
+  m_Name: TrainingCatalog
+  m_EditorClassIdentifier:
+  cards:
+  - id: ST01-004
+    title: Raineedle
+    color: RED
+    cost: 1
+    reduction: 1
+    cores: 010000000200000003000000
+    bp: e8030000b80b0000a00f0000
+    art: {fileID: 21300000, guid: 87648531c2894787902611a103551f5e, type: 3}
+  - id: ST01-005
+    title: Quicksand Dragon
+    color: RED
+    cost: 3
+    reduction: 2
+    cores: 0100000003000000
+    bp: d007000088130000
+    art: {fileID: 21300000, guid: a94757e38daa451c8f06a8fd56fd3d08, type: 3}
+  - id: ST01-011
+    title: Dragron Captain
+    color: RED
+    cost: 3
+    reduction: 2
+    cores: 010000000200000004000000
+    bp: b80b0000a00f0000581b0000
+    art: {fileID: 21300000, guid: c4ee6c3d61704d5483d06c8099534c8d, type: 3}
+  - id: BSS01-005
+    title: Phobos Dragoon
+    color: RED
+    cost: 5
+    reduction: 3
+    cores: 010000000300000005000000
+    bp: a00f000070170000401f0000
+    art: {fileID: 21300000, guid: 88c4255ea74c4e999b141c7c06a78aa9, type: 3}
+  - id: BSS01-010
+    title: Oviraptodon
+    color: RED
+    cost: 1
+    reduction: 1
+    cores: 010000000200000003000000
+    bp: e8030000b80b0000a00f0000
+    art: {fileID: 21300000, guid: 962c8097f8b74b269f8bb26a3bac4734, type: 3}
+  - id: BSS01-011
+    title: Ankylosauroid Gaston
+    color: RED
+    cost: 4
+    reduction: 4
+    cores: 0100000003000000
+    bp: b80b000070170000
+    art: {fileID: 21300000, guid: d0c88e2f0c734bdead8af4ee00827196, type: 3}
+  - id: BSS01-012
+    title: Pentaceratop
+    color: RED
+    cost: 5
+    reduction: 4
+    cores: 0100000003000000
+    bp: 88130000401f0000
+    art: {fileID: 21300000, guid: e8bded05c74443bc85a515c4bf8153e0, type: 3}
+  - id: BSS01-018
+    title: Horned Penguin
+    color: RED
+    cost: 2
+    reduction: 1
+    cores: 0100000004000000
+    bp: d007000070170000
+    art: {fileID: 21300000, guid: 0c69b46cf8a84e9baae49006c1c40f2e, type: 3}
+  - id: BSS01-019
+    title: Bearded Eagle
+    color: RED
+    cost: 3
+    reduction: 3
+    cores: 010000000200000004000000
+    bp: b80b000088130000581b0000
+    art: {fileID: 21300000, guid: 4e43e005123f499d9977e38ba69ab06e, type: 3}
+  - id: BSS01-020
+    title: Vajranoceros
+    color: RED
+    cost: 4
+    reduction: 3
+    cores: 0100000003000000
+    bp: a00f0000581b0000
+    art: {fileID: 21300000, guid: 24ce27fe797c479eb4bfee71e2d4331b, type: 3}
+  - id: BSS01-032
+    title: Chainviper
+    color: PURPLE
+    cost: 4
+    reduction: 2
+    cores: 0100000003000000
+    bp: b80b000088130000
+    art: {fileID: 21300000, guid: f704d65b34e145c5bf352966279e2b28, type: 3}
+  - id: BSS01-033
+    title: Skeleviper
+    color: PURPLE
+    cost: 5
+    reduction: 2
+    cores: 010000000300000006000000
+    bp: a00f00007017000028230000
+    art: {fileID: 21300000, guid: f1dd853e7803410582917e23e36c0ac4, type: 3}
+  - id: BSS01-036
+    title: Bone Scout
+    color: PURPLE
+    cost: 2
+    reduction: 2
+    cores: 010000000200000006000000
+    bp: e8030000b80b000088130000
+    art: {fileID: 21300000, guid: 5da0e977454b4d14863f5d4706aea136, type: 3}
+  - id: BSS01-055
+    title: Automatic Gunner
+    color: WHITE
+    cost: 1
+    reduction: 1
+    cores: 0100000003000000
+    bp: e8030000a00f0000
+    art: {fileID: 21300000, guid: d02040eec51c4f13bc8c19aed7e7e1ca, type: 3}
+  - id: BSS01-056
+    title: Satellite Falcon
+    color: WHITE
+    cost: 2
+    reduction: 2
+    cores: 010000000300000004000000
+    bp: d0070000a00f000088130000
+    art: {fileID: 21300000, guid: 88cf4fbfd8434ba7a7e04ea91879d295, type: 3}
+  - id: BSS01-063
+    title: Raccoon Guard
+    color: WHITE
+    cost: 3
+    reduction: 2
+    cores: 0100000002000000
+    bp: b80b000088130000
+    art: {fileID: 21300000, guid: e6706d676b03438c9d60d873d7c91ca0, type: 3}
+  - id: BSS01-065
+    title: Emperadore
+    color: WHITE
+    cost: 4
+    reduction: 3
+    cores: 010000000300000006000000
+    bp: a00f0000581b000028230000
+    art: {fileID: 21300000, guid: a2ba7a9790ec491fafff107f7a2d0ec2, type: 3}
+  - id: BSS01-082
+    title: Luminangel Suriel
+    color: YELLOW
+    cost: 5
+    reduction: 3
+    cores: 010000000200000003000000
+    bp: b80b000070170000401f0000
+    art: {fileID: 21300000, guid: f5d40fc9119d49c2a7c0b94eb6f0664d, type: 3}
+  - id: BSS01-088
+    title: Gembeast Carbulc
+    color: YELLOW
+    cost: 3
+    reduction: 2
+    cores: 010000000200000003000000
+    bp: b80b0000a00f000088130000
+    art: {fileID: 21300000, guid: 665e9dfd83de48d3a22cda4149d38f98, type: 3}
+  - id: BSS01-090
+    title: Gale Yale
+    color: YELLOW
+    cost: 4
+    reduction: 2
+    cores: 0100000003000000
+    bp: a00f000070170000
+    art: {fileID: 21300000, guid: 76c47c3211c64b818560e276bb0f7838, type: 3}

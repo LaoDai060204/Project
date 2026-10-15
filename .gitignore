@@ -60,3 +60,5 @@ Data/ur.ydk
 /Assets/SpineWallpaper/
 /Assets/StreamingAssets/
 /Assets/Wallpaper/
+# Track the standalone Saga engine test runner
+!BattleSpiritsSaga/Tests/*.csproj

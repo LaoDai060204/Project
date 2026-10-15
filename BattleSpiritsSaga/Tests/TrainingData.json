@@ -1,0 +1,324 @@
+[
+  {
+    "id": "ST01-004",
+    "title": "Raineedle",
+    "color": "RED",
+    "cost": 1,
+    "reduction": 1,
+    "cores": [
+      1,
+      2,
+      3
+    ],
+    "bp": [
+      1000,
+      3000,
+      4000
+    ]
+  },
+  {
+    "id": "ST01-005",
+    "title": "Quicksand Dragon",
+    "color": "RED",
+    "cost": 3,
+    "reduction": 2,
+    "cores": [
+      1,
+      3
+    ],
+    "bp": [
+      2000,
+      5000
+    ]
+  },
+  {
+    "id": "ST01-011",
+    "title": "Dragron Captain",
+    "color": "RED",
+    "cost": 3,
+    "reduction": 2,
+    "cores": [
+      1,
+      2,
+      4
+    ],
+    "bp": [
+      3000,
+      4000,
+      7000
+    ]
+  },
+  {
+    "id": "BSS01-005",
+    "title": "Phobos Dragoon",
+    "color": "RED",
+    "cost": 5,
+    "reduction": 3,
+    "cores": [
+      1,
+      3,
+      5
+    ],
+    "bp": [
+      4000,
+      6000,
+      8000
+    ]
+  },
+  {
+    "id": "BSS01-010",
+    "title": "Oviraptodon",
+    "color": "RED",
+    "cost": 1,
+    "reduction": 1,
+    "cores": [
+      1,
+      2,
+      3
+    ],
+    "bp": [
+      1000,
+      3000,
+      4000
+    ]
+  },
+  {
+    "id": "BSS01-011",
+    "title": "Ankylosauroid Gaston",
+    "color": "RED",
+    "cost": 4,
+    "reduction": 4,
+    "cores": [
+      1,
+      3
+    ],
+    "bp": [
+      3000,
+      6000
+    ]
+  },
+  {
+    "id": "BSS01-012",
+    "title": "Pentaceratop",
+    "color": "RED",
+    "cost": 5,
+    "reduction": 4,
+    "cores": [
+      1,
+      3
+    ],
+    "bp": [
+      5000,
+      8000
+    ]
+  },
+  {
+    "id": "BSS01-018",
+    "title": "Horned Penguin",
+    "color": "RED",
+    "cost": 2,
+    "reduction": 1,
+    "cores": [
+      1,
+      4
+    ],
+    "bp": [
+      2000,
+      6000
+    ]
+  },
+  {
+    "id": "BSS01-019",
+    "title": "Bearded Eagle",
+    "color": "RED",
+    "cost": 3,
+    "reduction": 3,
+    "cores": [
+      1,
+      2,
+      4
+    ],
+    "bp": [
+      3000,
+      5000,
+      7000
+    ]
+  },
+  {
+    "id": "BSS01-020",
+    "title": "Vajranoceros",
+    "color": "RED",
+    "cost": 4,
+    "reduction": 3,
+    "cores": [
+      1,
+      3
+    ],
+    "bp": [
+      4000,
+      7000
+    ]
+  },
+  {
+    "id": "BSS01-032",
+    "title": "Chainviper",
+    "color": "PURPLE",
+    "cost": 4,
+    "reduction": 2,
+    "cores": [
+      1,
+      3
+    ],
+    "bp": [
+      3000,
+      5000
+    ]
+  },
+  {
+    "id": "BSS01-033",
+    "title": "Skeleviper",
+    "color": "PURPLE",
+    "cost": 5,
+    "reduction": 2,
+    "cores": [
+      1,
+      3,
+      6
+    ],
+    "bp": [
+      4000,
+      6000,
+      9000
+    ]
+  },
+  {
+    "id": "BSS01-036",
+    "title": "Bone Scout",
+    "color": "PURPLE",
+    "cost": 2,
+    "reduction": 2,
+    "cores": [
+      1,
+      2,
+      6
+    ],
+    "bp": [
+      1000,
+      3000,
+      5000
+    ]
+  },
+  {
+    "id": "BSS01-055",
+    "title": "Automatic Gunner",
+    "color": "WHITE",
+    "cost": 1,
+    "reduction": 1,
+    "cores": [
+      1,
+      3
+    ],
+    "bp": [
+      1000,
+      4000
+    ]
+  },
+  {
+    "id": "BSS01-056",
+    "title": "Satellite Falcon",
+    "color": "WHITE",
+    "cost": 2,
+    "reduction": 2,
+    "cores": [
+      1,
+      3,
+      4
+    ],
+    "bp": [
+      2000,
+      4000,
+      5000
+    ]
+  },
+  {
+    "id": "BSS01-063",
+    "title": "Raccoon Guard",
+    "color": "WHITE",
+    "cost": 3,
+    "reduction": 2,
+    "cores": [
+      1,
+      2
+    ],
+    "bp": [
+      3000,
+      5000
+    ]
+  },
+  {
+    "id": "BSS01-065",
+    "title": "Emperadore",
+    "color": "WHITE",
+    "cost": 4,
+    "reduction": 3,
+    "cores": [
+      1,
+      3,
+      6
+    ],
+    "bp": [
+      4000,
+      7000,
+      9000
+    ]
+  },
+  {
+    "id": "BSS01-082",
+    "title": "Luminangel Suriel",
+    "color": "YELLOW",
+    "cost": 5,
+    "reduction": 3,
+    "cores": [
+      1,
+      2,
+      3
+    ],
+    "bp": [
+      3000,
+      6000,
+      8000
+    ]
+  },
+  {
+    "id": "BSS01-088",
+    "title": "Gembeast Carbulc",
+    "color": "YELLOW",
+    "cost": 3,
+    "reduction": 2,
+    "cores": [
+      1,
+      2,
+      3
+    ],
+    "bp": [
+      3000,
+      4000,
+      5000
+    ]
+  },
+  {
+    "id": "BSS01-090",
+    "title": "Gale Yale",
+    "color": "YELLOW",
+    "cost": 4,
+    "reduction": 2,
+    "cores": [
+      1,
+      3
+    ],
+    "bp": [
+      4000,
+      6000
+    ]
+  }
+]
